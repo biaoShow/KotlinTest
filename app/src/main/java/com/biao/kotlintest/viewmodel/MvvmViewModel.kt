@@ -22,10 +22,16 @@ class MvvmViewModel : BaseViewModel<MvvmModel>() {
 
     fun getNewsData(page: Int) {
         viewModelScope.launch {
-            loading.postValue(true)
-            val newsRespBean = model.getNewsData(page)
-            loading.postValue(false)
-            text.postValue(newsRespBean.toString())
+            try {
+                loading.postValue(true)
+                val newsRespBean = model.getNewsData(page)
+                loading.postValue(false)
+                text.postValue(newsRespBean.toString())
+            } catch (e: Exception) {
+                loading.postValue(false)
+                text.postValue(e.message)
+            }
+
         }
     }
 }
